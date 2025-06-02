@@ -6,6 +6,7 @@ import UserList from "./components/Users/UserList";
 import Master from "./components/Layouts/Master.tsx";
 import UserAdd from "./components/Users/UserAdd";
 import UserEdit from "./components/Users/UserEdit";
+import {ToastContainer} from "react-toastify";
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
                <Route path={"users/:id/edit"} element={<UserEdit/>}/>
            </Route>
        </Routes>
+        <ToastContainer />
     </>
   )
 }

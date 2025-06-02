@@ -1,55 +1,41 @@
 import {useEffect, useState} from "react";
 import {Button, Form, Table} from "react-bootstrap";
 import {Link} from "react-router";
+import UserService from "../../../services/user.service.ts";
+import {toast} from "react-toastify";
 
-
-const data = [
-    {
-        id: 1,
-        name: "Nam",
-        email: "nam@gmail.com",
-        phone: '09898987',
-        active: true
-    },
-    {
-        id: 2,
-        name: "Nam",
-        email: "nam2@gmail.com",
-        phone: '09898987',
-        active: false
-    },
-    {
-        id: 3,
-        name: "Nam",
-        email: "nam@gmail.com",
-        phone: '09898987',
-        active: false
-    }
-]
 
 function UserList() {
 
-    const [users, setUsers] = useState(data);
+    const [users, setUsers] = useState([]);
+    const [reload, setReload] = useState(false);
 
-    const handleDeleteUser = (index: number) => {
+    const handleDeleteUser = (id: number) => {
         if (!confirm('Are you sure? ')) {
             return;
         }
-        users.splice(index, 1);
-        setUsers([...users]);
+        // call api delete
+        UserService.deleteUserById(id).then((res) => {
+            toast.success("Delete success")
+            setReload(!reload);
+        }).catch(error => {
+
+        })
     }
 
-    const handleChangeStatus = (index: number) => {
-        users[index].active = !users[index].active;
-        setUsers([...users]);
+    const handleChangeStatus = (e, id) => {
+        UserService.changeStatusUser(e.target.checked, id).then(res => {
+            toast.success("Change status user success");
+            setReload(!reload);
+        })
     }
 
     useEffect(() => {
-        console.log("Component user list did mount")
-        return () => {
-            console.log("Component user list unmount")
-        }
-    }, [])
+        // call api de get data hien thi
+        UserService.getAllUser().then(res => {
+            setUsers(res.data);
+        })
+    }, [reload])
 
     useEffect(() => {
         console.log("Component user list did update")
@@ -68,17 +54,19 @@ function UserList() {
                     <th>Name</th>
                     <th>Email</th>
                     <th>Phone</th>
+                    <th>Role</th>
                     <th>Active</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
-                { users.map((user, index) => (
+                { users.map((user: any, index: number) => (
                     <tr key={user.id}>
                         <td>{index + 1}</td>
                         <td>{user.name}</td>
                         <td>{user.email}</td>
                         <td>{user.phone}</td>
+                        <td>{user.role.name}</td>
                         <td>
                             <Form>
                                 <Form.Check // prettier-ignore
@@ -86,12 +74,12 @@ function UserList() {
                                     id="custom-switch"
                                     checked={user.active}
                                     label={user.active ? 'Active' : 'Deactivate'}
-                                    onChange={() => handleChangeStatus(index)}
+                                    onChange={(e) => handleChangeStatus(e, user.id)}
                                 />
                             </Form>
                         </td>
                         <td>
-                            <Button variant="danger" onClick={() => handleDeleteUser(index)}>Delete</Button>
+                            <Button variant="danger" onClick={() => handleDeleteUser(user.id)}>Delete</Button>
                             <Link to={`/admin/users/${user.id}/edit`}>
                                 <Button variant="primary">Edit</Button>
                             </Link>
