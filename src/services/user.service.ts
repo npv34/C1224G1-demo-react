@@ -18,6 +18,14 @@ class UserService {
             "active": active
         })
     }
+
+    static async findById(id: number) {
+        return await intanceAxios.get(`/users/${id}?_expand=role`)
+    }
+
+    static async updateUser(data: any, id: number) {
+        return await intanceAxios.patch(`/users/${id}`, data)
+    }
 }
 
 export default UserService;

@@ -1,6 +1,7 @@
 import {Container, Navbar} from "react-bootstrap";
 import FormSearch from "./FormSearch.tsx";
 import DropdownMenu from "./DropdownMenu.tsx";
+import {useSelector} from "react-redux";
 
 const menuDropDownItem = [
     {
@@ -17,7 +18,7 @@ const menuDropDownItem = [
 
 function HeaderTop({pageTitle}) {
 
-
+    const auth = useSelector(state => state.auth)
     const getKeyword = (keyword) => {
         alert(keyword)
     }
@@ -31,6 +32,7 @@ function HeaderTop({pageTitle}) {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <DropdownMenu listItem={menuDropDownItem}/>
                     </Navbar.Collapse>
+                    <Navbar.Brand>Xin chao: {auth.email}</Navbar.Brand>
                    <FormSearch actionGetKeyword={getKeyword} />
                 </Container>
             </Navbar>

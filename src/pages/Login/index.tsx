@@ -19,6 +19,9 @@ import { GoogleIcon, FacebookIcon, SitemarkIcon } from '../../components/CustomI
 import ForgotPassword from "../../components/ForgotPassword";
 import {useFormik} from "formik";
 import * as Yup from "yup";
+import {useNavigate} from "react-router";
+import {useDispatch, useSelector} from "react-redux";
+import {login} from "../../redux/features/auth/authSlice.ts";
 
 const Card = styled(MuiCard)(({ theme }) => ({
     display: 'flex',
@@ -70,6 +73,8 @@ const validateFormLogin = Yup.object().shape({
 
 export default function SignIn(props: { disableCustomTheme?: boolean }) {
     const [open, setOpen] = React.useState(false);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -87,7 +92,12 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
         },
         validationSchema: validateFormLogin,
         onSubmit: values => {
-
+            const email = values.email;
+            // @ts-ignore
+            dispatch(login({
+                email: email
+            }))
+            navigate("/admin/users")
         }
     })
 
