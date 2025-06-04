@@ -3,6 +3,7 @@ import {Button, Form, Table} from "react-bootstrap";
 import {Link} from "react-router";
 import UserService from "../../../services/user.service.ts";
 import {toast} from "react-toastify";
+import { Input } from "@mui/material";
 
 
 function UserList() {
@@ -41,12 +42,20 @@ function UserList() {
         console.log("Component user list did update")
     }, [users]);
 
+    const handleSearch = (event: any) => {
+        const keyword: string = event.target.value;
+        UserService.searchByName(keyword).then(res => {
+            setUsers(res.data)
+        })
+    }
+
     return (
         <>
             <h1>User List</h1>
             <Link to={"/admin/users/create"}>
                 <Button variant={"success"}>Create</Button>
             </Link>
+            <Input onChange={(e) => handleSearch(e)}/>
             <Table striped bordered hover>
                 <thead>
                 <tr>

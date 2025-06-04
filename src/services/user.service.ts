@@ -26,6 +26,10 @@ class UserService {
     static async updateUser(data: any, id: number) {
         return await intanceAxios.patch(`/users/${id}`, data)
     }
+
+    static async searchByName(name: string) {
+        return await intanceAxios.get(`/users?name_like=${name}`)
+    }
 }
 
 export default UserService;

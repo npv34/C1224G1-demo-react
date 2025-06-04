@@ -72,13 +72,14 @@ function UserEdit() {
                         <Box
                             onSubmit={formEditUser.handleSubmit}
                             component="form"
-                            sx={{'& .MuiTextField-root': {m: 1, width: '25ch'}}}
+                            sx={{'& .MuiTextField-root': {m: 1, width: '50ch'}}}
                             noValidate
                             autoComplete="off"
                         >
                             <div>
                                 <TextField
                                     required
+                                    fullWidth
                                     id="outlined-required"
                                     label="Name"
                                     name={"name"}
@@ -144,9 +145,9 @@ function UserEdit() {
                                 />
                             </div>
                             <div>
-                                <Button type={"submit"}>Save</Button>
+                                <Button type={"submit"} variant={"outlined"}>Save</Button>
                                 <Link to={"/admin/users"}>
-                                    <Button type={"button"} variant={"outlined"}>Cancel</Button>
+                                    <Button type={"button"} >Cancel</Button>
                                 </Link>
                             </div>
                         </Box>
